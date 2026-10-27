@@ -1,7 +1,11 @@
 
 package com.unpri.charactermanager.model;
 
+import java.util.Objects;
+
 public class Character {
+
+    private static int totalCharacterCreated = 0;
 
     // Atribut
     private int id;
@@ -10,7 +14,7 @@ public class Character {
     private int level;
     private int hitPoints;
     private int attackPower;
-    private int mana; // atribut baru
+    private int mana;
 
     // Constructor 1: membuat karakter baru
     public Character(String name, CharacterType type, int level) {
@@ -19,7 +23,9 @@ public class Character {
         this.level = level;
         this.hitPoints = calculateBaseHP();
         this.attackPower = calculateBaseAttack();
-        this.mana = 0; // mana awal
+        this.mana = 0;
+
+        totalCharacterCreated++;
     }
 
     // Constructor 2: memuat karakter dari database
@@ -31,7 +37,9 @@ public class Character {
         this.level = level;
         this.hitPoints = hitPoints;
         this.attackPower = attackPower;
-        this.mana = 0; // mana awal
+        this.mana = 0;
+
+        totalCharacterCreated++;
     }
 
     // Helper method
@@ -72,6 +80,11 @@ public class Character {
         return mana;
     }
 
+    // Mengambil jumlah seluruh objek Character yang dibuat
+    public static int getTotalCharacterCreated() {
+        return totalCharacterCreated;
+    }
+
     // Setter
     public void setId(int id) {
         this.id = id;
@@ -104,7 +117,28 @@ public class Character {
         return hitPoints > 0;
     }
 
-    // Representasi teks object
+    // Membandingkan karakter berdasarkan nama
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        Character other = (Character) obj;
+        return Objects.equals(this.name, other.name);
+    }
+
+    // hashCode harus konsisten dengan equals
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
+    }
+
+    // Representasi teks objek
     @Override
     public String toString() {
         return "Character{id=" + id +

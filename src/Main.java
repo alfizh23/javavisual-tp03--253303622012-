@@ -1,51 +1,147 @@
 
 import com.unpri.charactermanager.model.Character;
 import com.unpri.charactermanager.model.CharacterType;
+import com.unpri.charactermanager.model.CharacterManager;
 
 public class Main {
+
     public static void main(String[] args) {
 
-        System.out.println("=== Character Manager v0.1 ===");
+        System.out.println("=== Character Manager TP5 ===");
 
+        CharacterManager manager = new CharacterManager();
+
+        // Menguji list kosong
+        System.out.println("\n--- Empty List Test ---");
+        System.out.println("Average level saat kosong: "
+                + manager.getAverageLevel());
+
+        // Membuat karakter
         Character hero = new Character(
-            "Arjuna", CharacterType.WARRIOR, 5
-        );
+                "Arjuna", CharacterType.WARRIOR, 5);
 
         Character wizard = new Character(
-            "Merlin", CharacterType.MAGE, 3
-        );
+                "Merlin", CharacterType.MAGE, 3);
 
         Character scout = new Character(
-            "Athena", CharacterType.ARCHER, 4
-        );
-
-        System.out.println(hero);
-        System.out.println(wizard);
-        System.out.println(scout);
-
-        System.out.println();
-
-        System.out.println(">> " + hero.getName() + " level up!");
-        hero.setLevel(hero.getLevel() + 1);
-        System.out.println("After level up: " + hero);
-
-        System.out.println();
-
-        System.out.println(">> Nama karakter: " + hero.getName());
-        System.out.println(">> Jenis karakter: " + hero.getType());
-        System.out.println(">> HP saat ini: " + hero.getHitPoints());
-
-        // Challenge: membuat karakter baru
-        System.out.println();
+                "Athena", CharacterType.ARCHER, 4);
 
         Character healer = new Character(
-            "Luna", CharacterType.HEALER, 2
-        );
+                "Luna", CharacterType.HEALER, 2);
 
-        healer.setMana(50);
+        // Bagian A: menambahkan karakter
+        System.out.println("\n--- Add Character ---");
+        System.out.println("Tambah Arjuna: "
+                + manager.addCharacter(hero));
+        System.out.println("Tambah Merlin: "
+                + manager.addCharacter(wizard));
+        System.out.println("Tambah Athena: "
+                + manager.addCharacter(scout));
+        System.out.println("Tambah Luna: "
+                + manager.addCharacter(healer));
 
-        System.out.println(">> Karakter baru: " + healer);
-        System.out.println(">> Mana Luna: " + healer.getMana());
-        System.out.println(">> Luna masih hidup: " + healer.isAlive());
+        // Menguji nama duplikat
+        Character duplicate = new Character(
+                "Arjuna", CharacterType.MAGE, 2);
+
+        System.out.println("Tambah Arjuna duplikat: "
+                + manager.addCharacter(duplicate));
+
+        // Menampilkan seluruh karakter
+        System.out.println("\n--- All Characters ---");
+
+        for (Character character : manager.getAllCharacters()) {
+            System.out.println(character);
+        }
+
+        // Mencari karakter
+        System.out.println("\n--- Find Character ---");
+        System.out.println("Cari Merlin: "
+                + manager.findByName("Merlin"));
+        System.out.println("Cari Budi: "
+                + manager.findByName("Budi"));
+
+        // Menghitung total karakter
+        System.out.println("\n--- Total Characters ---");
+        System.out.println("Total: "
+                + manager.getTotalCharacters());
+
+        // Bagian B: rata-rata level
+        System.out.println("\n--- Average Level ---");
+        System.out.println("Average level: "
+                + manager.getAverageLevel());
+
+        // Bagian B: mencari berdasarkan tipe
+        System.out.println("\n--- Find By Type ---");
+        System.out.println("WARRIOR: "
+                + manager.findByType(CharacterType.WARRIOR));
+        System.out.println("MAGE: "
+                + manager.findByType(CharacterType.MAGE));
+
+        // Bagian C: mencari karakter terkuat
+        System.out.println("\n--- Strongest Character ---");
+        System.out.println("Terkuat: "
+                + manager.findStrongest());
+
+        // Menguji salinan ArrayList
+        System.out.println("\n--- Copy Experiment ---");
+
+        java.util.ArrayList<Character> copy =
+                manager.getAllCharacters();
+
+        System.out.println("Jumlah copy sebelum clear: "
+                + copy.size());
+
+        copy.clear();
+
+        System.out.println("Jumlah copy setelah clear: "
+                + copy.size());
+
+        System.out.println("Jumlah manager setelah clear copy: "
+                + manager.getTotalCharacters());
+
+        // Menguji reference
+        System.out.println("\n--- Reference Experiment ---");
+
+        Character a = new Character(
+                "ReferenceHero", CharacterType.WARRIOR, 1);
+
+        Character b = a;
+
+        b.setLevel(8);
+
+        System.out.println("a.getLevel(): " + a.getLevel());
+        System.out.println("a == b: " + (a == b));
+
+        // Menguji equals()
+        System.out.println("\n--- Equals Experiment ---");
+
+        Character x = new Character(
+                "Dewi", CharacterType.HEALER, 2);
+
+        Character y = new Character(
+                "Dewi", CharacterType.MAGE, 5);
+
+        System.out.println("x == y: " + (x == y));
+        System.out.println("x.equals(y): " + x.equals(y));
+
+        // Menghapus karakter
+        System.out.println("\n--- Remove Character ---");
+
+        System.out.println("Hapus Merlin: "
+                + manager.removeCharacter("Merlin"));
+
+        System.out.println("Hapus Budi: "
+                + manager.removeCharacter("Budi"));
+
+        System.out.println("Total setelah hapus: "
+                + manager.getTotalCharacters());
+
+        // Menguji penghitung objek static
+        System.out.println("\n--- Static Counter ---");
+        System.out.println("Total objek Character dibuat: "
+                + Character.getTotalCharacterCreated());
+
+        System.out.println("\n=== Program selesai ===");
     }
 }
