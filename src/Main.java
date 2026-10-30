@@ -1,13 +1,16 @@
 
+import javax.swing.SwingUtilities;
+
 import com.unpri.charactermanager.model.Character;
 import com.unpri.charactermanager.model.CharacterType;
 import com.unpri.charactermanager.model.CharacterManager;
+import com.unpri.charactermanager.view.MainWindow;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        System.out.println("=== Character Manager TP5 ===");
+        System.out.println("=== Character Manager TP8 ===");
 
         CharacterManager manager = new CharacterManager();
 
@@ -16,7 +19,7 @@ public class Main {
         System.out.println("Average level saat kosong: "
                 + manager.getAverageLevel());
 
-        // Membuat karakter
+        // Membuat karakter lama
         Character hero = new Character(
                 "Arjuna", CharacterType.WARRIOR, 5);
 
@@ -29,6 +32,13 @@ public class Main {
         Character healer = new Character(
                 "Luna", CharacterType.HEALER, 2);
 
+        // Karakter baru TP8
+        Character knight = new Character(
+                "Orion", CharacterType.WARRIOR, 6);
+
+        Character priest = new Character(
+                "Freya", CharacterType.HEALER, 3);
+
         // Bagian A: menambahkan karakter
         System.out.println("\n--- Add Character ---");
         System.out.println("Tambah Arjuna: "
@@ -39,6 +49,10 @@ public class Main {
                 + manager.addCharacter(scout));
         System.out.println("Tambah Luna: "
                 + manager.addCharacter(healer));
+        System.out.println("Tambah Orion: "
+                + manager.addCharacter(knight));
+        System.out.println("Tambah Freya: "
+                + manager.addCharacter(priest));
 
         // Menguji nama duplikat
         Character duplicate = new Character(
@@ -143,5 +157,16 @@ public class Main {
                 + Character.getTotalCharacterCreated());
 
         System.out.println("\n=== Program selesai ===");
+
+        // Menjalankan GUI menggunakan Swing Event Dispatch Thread
+        SwingUtilities.invokeLater(() -> {
+
+            MainWindow window = new MainWindow(
+                    manager.getAllCharacters(),
+                    manager.getAverageLevel()
+            );
+
+            window.setVisible(true);
+        });
     }
 }
