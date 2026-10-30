@@ -94,3 +94,31 @@ Hasil pengujian menunjukkan rata-rata level empat karakter adalah `3.5`. Pencari
 ## C. Fitur Tambahan: findStrongest()
 
 Saya menambahkan method `findStrongest()` untuk mencari karakter dengan attack power tertinggi. Method ini meng
+
+## TP8 - Implementasi GUI Character Manager
+
+### Screenshot Aplikasi
+
+**Tampilan awal (5 karakter):**
+
+![Tampilan awal Character Manager](screenshots/TP8-sebelum.png)
+
+**Tampilan setelah menambahkan karakter Nova:**
+
+![Tampilan setelah menambahkan Nova](screenshots/TP8-sesudah.png)
+
+### Penjelasan Alur Data dan MVC
+
+Pada program ini, `Main` membuat objek `CharacterManager` dan menambahkan beberapa karakter ke dalamnya. Selanjutnya, data karakter diambil menggunakan `getAllCharacters()` dan nilai rata-rata level diperoleh melalui `getAverageLevel()`. Kedua data tersebut diteruskan ke `MainWindow` untuk ditampilkan menggunakan komponen GUI Swing, termasuk daftar karakter dan statistik rata-rata level. Ketika tombol tambah karakter ditekan, karakter Nova ditambahkan ke daftar pada tampilan dan statistik diperbarui secara otomatis.
+
+Dalam konsep MVC, class `Character` dan `CharacterManager` berperan sebagai Model karena mengelola data karakter. Class `MainWindow` berperan sebagai View karena menampilkan data kepada pengguna. Sementara itu, `Main` mengatur proses awal pembuatan data dan menampilkan jendela aplikasi.
+
+### Karakter Tambahan
+
+1. **Orion** — tipe WARRIOR, level 6. Ditambahkan sebagai karakter petarung dengan level tinggi.
+2. **Freya** — tipe HEALER, level 3. Ditambahkan sebagai karakter pendukung yang memiliki kemampuan penyembuhan.
+3. **Nova** — tipe MAGE, level 5. Ditambahkan melalui tombol pada GUI untuk menunjukkan perubahan daftar karakter dan statistik secara dinamis.
+
+### Analisis TP8
+
+[Google Docs - Analisis TP8](GANTI_DENGAN_LINK_GOOGLE_DOCS)
