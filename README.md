@@ -1,4 +1,3 @@
-Iya, saya paham. Kita rapikan semuanya sekaligus dari awal. README lama tetap memuat TP3, TP5, dan TP8, kemudian ditambahkan TP10. Kamu tinggal ganti seluruh isi `README.md` dengan versi di bawah ini. Path screenshot sudah saya masukkan sesuai struktur folder project kamu.
 
 # Character Manager — Java Visual SIH-6406
 
