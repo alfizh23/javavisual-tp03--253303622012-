@@ -10,7 +10,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        System.out.println("=== Character Manager TP8 ===");
+        System.out.println("=== Character Manager TP10 ===");
 
         CharacterManager manager = new CharacterManager();
 
@@ -32,7 +32,7 @@ public class Main {
         Character healer = new Character(
                 "Luna", CharacterType.HEALER, 2);
 
-        // Karakter baru TP8
+        // Karakter tambahan TP8
         Character knight = new Character(
                 "Orion", CharacterType.WARRIOR, 6);
 
@@ -41,16 +41,22 @@ public class Main {
 
         // Bagian A: menambahkan karakter
         System.out.println("\n--- Add Character ---");
+
         System.out.println("Tambah Arjuna: "
                 + manager.addCharacter(hero));
+
         System.out.println("Tambah Merlin: "
                 + manager.addCharacter(wizard));
+
         System.out.println("Tambah Athena: "
                 + manager.addCharacter(scout));
+
         System.out.println("Tambah Luna: "
                 + manager.addCharacter(healer));
+
         System.out.println("Tambah Orion: "
                 + manager.addCharacter(knight));
+
         System.out.println("Tambah Freya: "
                 + manager.addCharacter(priest));
 
@@ -70,30 +76,43 @@ public class Main {
 
         // Mencari karakter
         System.out.println("\n--- Find Character ---");
+
         System.out.println("Cari Merlin: "
                 + manager.findByName("Merlin"));
+
         System.out.println("Cari Budi: "
                 + manager.findByName("Budi"));
 
         // Menghitung total karakter
         System.out.println("\n--- Total Characters ---");
+
         System.out.println("Total: "
                 + manager.getTotalCharacters());
 
         // Bagian B: rata-rata level
         System.out.println("\n--- Average Level ---");
+
         System.out.println("Average level: "
                 + manager.getAverageLevel());
 
         // Bagian B: mencari berdasarkan tipe
         System.out.println("\n--- Find By Type ---");
+
         System.out.println("WARRIOR: "
                 + manager.findByType(CharacterType.WARRIOR));
+
         System.out.println("MAGE: "
                 + manager.findByType(CharacterType.MAGE));
 
+        System.out.println("ARCHER: "
+                + manager.findByType(CharacterType.ARCHER));
+
+        System.out.println("HEALER: "
+                + manager.findByType(CharacterType.HEALER));
+
         // Bagian C: mencari karakter terkuat
         System.out.println("\n--- Strongest Character ---");
+
         System.out.println("Terkuat: "
                 + manager.findStrongest());
 
@@ -125,6 +144,7 @@ public class Main {
         b.setLevel(8);
 
         System.out.println("a.getLevel(): " + a.getLevel());
+
         System.out.println("a == b: " + (a == b));
 
         // Menguji equals()
@@ -137,6 +157,7 @@ public class Main {
                 "Dewi", CharacterType.MAGE, 5);
 
         System.out.println("x == y: " + (x == y));
+
         System.out.println("x.equals(y): " + x.equals(y));
 
         // Menghapus karakter
@@ -151,8 +172,22 @@ public class Main {
         System.out.println("Total setelah hapus: "
                 + manager.getTotalCharacters());
 
+        // Menambahkan karakter kembali untuk memenuhi
+        // minimal enam karakter pada GUI TP10
+        System.out.println("\n--- Restore Characters for TP10 GUI ---");
+
+        Character selene = new Character(
+                "Selene", CharacterType.MAGE, 5);
+
+        System.out.println("Tambah Selene untuk GUI: "
+                + manager.addCharacter(selene));
+
+        System.out.println("Total karakter untuk GUI: "
+                + manager.getTotalCharacters());
+
         // Menguji penghitung objek static
         System.out.println("\n--- Static Counter ---");
+
         System.out.println("Total objek Character dibuat: "
                 + Character.getTotalCharacterCreated());
 
@@ -161,10 +196,7 @@ public class Main {
         // Menjalankan GUI menggunakan Swing Event Dispatch Thread
         SwingUtilities.invokeLater(() -> {
 
-            MainWindow window = new MainWindow(
-                    manager.getAllCharacters(),
-                    manager.getAverageLevel()
-            );
+            MainWindow window = new MainWindow(manager);
 
             window.setVisible(true);
         });
