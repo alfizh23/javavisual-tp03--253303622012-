@@ -219,21 +219,11 @@ Struktur layout aplikasi dapat digambarkan sebagai berikut:
 
 ### G. Screenshot Resize
 
-#### 1. Ukuran Awal
+![TP12 Ukuran Awal](src/com/unpri/charactermanager/screenshots/screenshot-1-awal.png)
 
-## G. Screenshot Resize
+![TP12 Jendela Dilebarkan](src/com/unpri/charactermanager/screenshots/screenshot-2-diperlebar.png)
 
-#### 1. Ukuran Awal
-
-![TP12 Ukuran Awal](screenshots/screenshot-1-awal.png)
-
-#### 2. Jendela Dilebarkan
-
-![TP12 Jendela Dilebarkan](screenshots/screenshot-2-diperlebar.png)
-
-#### 3. Jendela Dikecilkan
-
-![TP12 Jendela Dikecilkan](screenshots/screenshot-3-diperkecil.png)
+![TP12 Jendela Dikecilkan](src/com/unpri/charactermanager/screenshots/screenshot-3-diperkecil.png)
 
 
 
