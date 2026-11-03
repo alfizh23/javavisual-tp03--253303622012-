@@ -39,6 +39,13 @@ public class Main {
         Character priest = new Character(
                 "Freya", CharacterType.HEALER, 3);
 
+        // Karakter tambahan untuk variasi visual AP12
+        Character gatotkaca = new Character(
+                "Gatotkaca", CharacterType.WARRIOR, 7);
+
+        Character morgana = new Character(
+                "Morgana", CharacterType.MAGE, 1);
+
         // Bagian A: menambahkan karakter
         System.out.println("\n--- Add Character ---");
 
@@ -59,6 +66,12 @@ public class Main {
 
         System.out.println("Tambah Freya: "
                 + manager.addCharacter(priest));
+
+        System.out.println("Tambah Gatotkaca: "
+                + manager.addCharacter(gatotkaca));
+
+        System.out.println("Tambah Morgana: "
+                + manager.addCharacter(morgana));
 
         // Menguji nama duplikat
         Character duplicate = new Character(
@@ -172,8 +185,7 @@ public class Main {
         System.out.println("Total setelah hapus: "
                 + manager.getTotalCharacters());
 
-        // Menambahkan karakter kembali untuk memenuhi
-        // minimal enam karakter pada GUI TP10
+        // Menambahkan karakter kembali untuk GUI
         System.out.println("\n--- Restore Characters for TP10 GUI ---");
 
         Character selene = new Character(
@@ -196,7 +208,8 @@ public class Main {
         // Menjalankan GUI menggunakan Swing Event Dispatch Thread
         SwingUtilities.invokeLater(() -> {
 
-            MainWindow window = new MainWindow(manager);
+            MainWindow window = new MainWindow(
+                    manager.getAllCharacters());
 
             window.setVisible(true);
         });
