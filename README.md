@@ -136,11 +136,135 @@ Karakter yang masih berada di level 1 dibuat nonaktif menggunakan `setEnabled(fa
 
 Dokumen tersebut berisi analisis mengenai JavaBeans getter/setter, properti background JLabel, pengaturan ukuran komponen Swing, pemisahan Model dan View, serta penggunaan logical font dan `deriveFont()`.
 
+
+```markdown
+---
+
+## TP12 — Implementasi Layout & Resize
+
+### A. Implementasi Layout
+
+Pada TP12, `MainWindow` dikembangkan menjadi versi v0.5 dengan menggunakan `BorderLayout` sebagai layout utama. Aplikasi dibagi menjadi empat wilayah, yaitu `NORTH` untuk header dan statistik, `CENTER` untuk daftar karakter, `EAST` untuk legenda role, dan `SOUTH` untuk status bar.
+
+Daftar karakter ditempatkan di dalam `JScrollPane`. Kartu karakter terlebih dahulu ditambahkan ke panel khusus, kemudian panel tersebut dimasukkan ke dalam `JScrollPane`. Cara ini membuat daftar karakter dapat digulir ketika ukuran jendela terlalu kecil.
+
+Legenda menggunakan `BoxLayout` dengan arah `Y_AXIS`. Isi legenda dibuat berdasarkan `CharacterType.values()` sehingga seluruh role yang tersedia pada Model dapat ditampilkan tanpa menuliskan role satu per satu secara manual. `Box.createVerticalStrut()` digunakan untuk memberikan jarak antar elemen, sedangkan `Box.createVerticalGlue()` membantu menjaga susunan legenda tetap rapi.
+
+Tidak digunakan `setLayout(null)` maupun `setBounds()` pada `MainWindow`. Pengaturan warna dan font juga tetap menggunakan `AppTheme`, sehingga kode layout tidak memiliki nilai warna atau font yang ditulis secara hardcode. Package `model` tidak diubah pada TP12.
+
+### B. Panel Tambahan
+
+Sebagai perluasan dari layout sebelumnya, ditambahkan panel statistik pada bagian `NORTH`. Panel tersebut menggunakan `GridLayout(2, 2)` sehingga empat informasi statistik dapat disusun dalam empat bagian dengan ukuran yang seimbang.
+
+Informasi yang ditampilkan adalah jumlah karakter, rata-rata level, level tertinggi, dan jumlah role. `GridLayout` dipilih karena setiap informasi memiliki tingkat kepentingan yang sama dan cocok ditampilkan dalam susunan baris dan kolom yang teratur.
+
+`FlowLayout` tidak dipilih untuk panel statistik karena FlowLayout lebih cocok untuk komponen yang disusun secara berurutan dalam satu baris, sedangkan statistik pada aplikasi ini lebih mudah dibaca jika dibagi menjadi empat bagian.
+
+### C. Status Bar
+
+Status bar ditempatkan pada bagian `SOUTH` menggunakan `BorderLayout`. Teks `"Character Manager"` berada di sebelah kiri, sedangkan versi aplikasi `"v0.5"` berada di sebelah kanan.
+
+### D. Karakter
+
+Aplikasi menampilkan minimal delapan karakter dengan variasi level dan role sebagai berikut:
+
+| Nama | Role | Level |
+|---|---|---:|
+| Arjuna | WARRIOR | 5 |
+| Athena | ARCHER | 4 |
+| Luna | HEALER | 2 |
+| Orion | WARRIOR | 6 |
+| Freya | HEALER | 3 |
+| Gatotkaca | WARRIOR | 7 |
+| Morgana | MAGE | 1 |
+| Selene | MAGE | 5 |
+
+Data karakter tetap dikelola oleh Model, sedangkan `MainWindow` hanya membaca data menggunakan getter untuk menampilkannya.
+
+### E. Struktur Panel Bersarang
+
+Struktur utama aplikasi menggunakan `BorderLayout` pada `mainPanel`. Bagian `NORTH` berisi panel header yang memiliki judul dan panel statistik dengan `GridLayout`. Bagian `CENTER` berisi `JScrollPane` yang membungkus panel kartu karakter, sedangkan bagian `EAST` berisi panel legenda dengan `BoxLayout`. Bagian `SOUTH` digunakan sebagai status bar dengan `BorderLayout` agar teks aplikasi dapat berada di kiri dan versi berada di kanan.
+
+### F. Wireframe
+
+Struktur layout aplikasi dapat digambarkan sebagai berikut:
+
+```text
++-------------------------------------------------------------+
+|                      HEADER                                 |
+|                 Character Manager                           |
+|                                                             |
+|       +----------------+----------------+                   |
+|       | Total          | Average Level  |                   |
+|       +----------------+----------------+                   |
+|       | Highest Level  | Roles          |                   |
+|       +----------------+----------------+                   |
++---------------------------------------------+---------------+
+|                                             |               |
+|              DAFTAR KARAKTER               |    LEGEND     |
+|                                             |               |
+|  Arjuna | WARRIOR | Lv.5 | HP | ATK        | WARRIOR       |
+|  Athena | ARCHER  | Lv.4 | HP | ATK        | MAGE          |
+|  Luna   | HEALER  | Lv.2 | HP | ATK        | ARCHER        |
+|  Orion  | WARRIOR | Lv.6 | HP | ATK        | HEALER        |
+|  ...                                        |               |
+|                                             |               |
+|              [ Scrollbar ]                  |               |
++---------------------------------------------+---------------+
+| Character Manager                                      v0.5 |
++-------------------------------------------------------------+
+```
+
+### G. Screenshot Resize
+
+### G. Screenshot Resize
+
+#### 1. Ukuran Awal
+
+## G. Screenshot Resize
+
+#### 1. Ukuran Awal
+
+![TP12 Ukuran Awal](screenshots/screenshot-1-awal.png)
+
+#### 2. Jendela Dilebarkan
+
+![TP12 Jendela Dilebarkan](screenshots/screenshot-2-diperlebar.png)
+
+#### 3. Jendela Dikecilkan
+
+![TP12 Jendela Dikecilkan](screenshots/screenshot-3-diperkecil.png)
+
+
+
+## H. Tabel Prediksi dan Hasil Resize
+
+| Kondisi Jendela | Prediksi Sebelum Pengujian | Hasil Setelah Pengujian |
+|---|---|---|
+| Ukuran Awal | Komponen ditampilkan sesuai pembagian area BorderLayout. | Seluruh komponen tampil, termasuk delapan kartu karakter, panel statistik, legenda, dan status bar. |
+| Jendela Dilebarkan | Area CENTER akan mendapatkan ruang lebih luas, sedangkan legenda tetap berada di sebelah kanan. | Tampilan melebar dan area daftar karakter mendapatkan ruang lebih besar. |
+| Jendela Dikecilkan | Area CENTER akan menyesuaikan ukuran dan JScrollPane menyediakan scrollbar jika konten tidak muat. | Scrollbar vertikal muncul sehingga daftar karakter tetap dapat diakses. |
+
+### I. Analisis Layout & MVC
+
+Google Docs — Analisis TP12
+
+[JavaVisual TP12 — Analisis Layout & MVC](https://docs.google.com/document/d/12BvOLGWMB7nRJHvVgYGQ4Jr5PluIiFxGWWTeSLaWKg8/edit?usp=sharing)
+
+Dokumen tersebut berisi analisis mengenai penggunaan Layout Manager, preferred size, BorderLayout, GridLayout, BoxLayout, JScrollPane, pemisahan Model dan View, serta penggunaan `revalidate()` dan `repaint()`.
+```
+
+Jadi **jangan mengganti README kamu dengan teks di atas**. Cukup **tambahkan section TP12 tersebut** ke README yang sudah ada.
+
+Ada satu hal penting: nama screenshot seperti `tp12_awal.png`, `tp12_lebar.png`, dan `tp12_kecil.png` **belum perlu kamu buat sekarang**. Nanti setelah GUI berhasil jalan, kita ambil 3 screenshot tersebut dan baru kita sesuaikan path-nya.
+
+Dan untuk link Google Docs, **jangan pakai link TP10 yang lama**. Nanti kita buat/siapkan khusus untuk TP12.
+
 ---
 
 ## Struktur Folder Project
 
-```text
+
 javavisual-tp03-[253303622012]/
 │
 ├── src/
@@ -167,4 +291,4 @@ javavisual-tp03-[253303622012]/
 │   └── TP8-sesudah.png
 │
 └── README.md
-```
+
