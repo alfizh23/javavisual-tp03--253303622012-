@@ -282,3 +282,68 @@ javavisual-tp03-[253303622012]/
 │
 └── README.md
 
+
+
+## TP14 – Implementasi Validasi Input
+
+### A. Deskripsi
+
+Pada TP14, dilakukan implementasi validasi input pada aplikasi Character Manager. Validasi diterapkan untuk memastikan bahwa data karakter yang dimasukkan pengguna sesuai dengan ketentuan sistem. Pemeriksaan dilakukan terhadap nama karakter, role, level, duplikasi nama, serta jumlah maksimum karakter yang dapat disimpan.
+
+Validasi diterapkan pada class `Character`, `CharacterManager`, dan `CharacterFormPanel` agar pemeriksaan data dilakukan pada bagian model, pengelolaan data, dan antarmuka pengguna.
+
+### B. Aturan Validasi
+
+Aturan validasi yang diterapkan pada aplikasi adalah sebagai berikut:
+
+1. Nama karakter wajib diisi.
+2. Nama karakter maksimal 20 karakter.
+3. Nama hanya boleh menggunakan huruf dan spasi tunggal antar kata.
+4. Role karakter tidak boleh bernilai `null`.
+5. Level karakter harus berada pada rentang 1–99.
+6. Karakter dengan role `MAGE` memiliki level maksimal 60.
+7. Nama karakter tidak boleh duplikat, termasuk perbedaan huruf besar dan kecil.
+8. Jumlah karakter maksimal 20 data.
+
+### C. Hasil Pengujian
+
+Pengujian dilakukan dengan mencoba berbagai kondisi input untuk memastikan seluruh aturan validasi berjalan dengan baik.
+
+| No. | Skenario Pengujian | Hasil yang Diharapkan | Hasil Pengujian |
+|---|---|---|---|
+| 1 | Nama kosong | Input ditolak | Berhasil |
+| 2 | Nama lebih dari 20 karakter | Input ditolak | Berhasil |
+| 3 | Nama mengandung angka atau simbol | Input ditolak | Berhasil |
+| 4 | Nama karakter duplikat | Input ditolak | Berhasil |
+| 5 | Nama sama dengan kapitalisasi berbeda | Input ditolak | Berhasil |
+| 6 | Level di luar rentang 1–99 | Input ditolak | Berhasil |
+| 7 | MAGE dengan level 61 | Input ditolak | Berhasil |
+| 8 | MAGE dengan level 60 | Input diterima | Berhasil |
+| 9 | WARRIOR dengan level 99 | Input diterima | Berhasil |
+| 10 | Menambahkan karakter ke-21 | Input ditolak | Berhasil |
+
+### D. Dokumentasi Screenshot
+
+Screenshot berikut merupakan dokumentasi hasil pengujian aplikasi Character Manager pada TP14.
+
+#### 1. Validasi Input
+
+Screenshot ini memperlihatkan proses validasi ketika pengguna memasukkan data karakter yang tidak sesuai dengan ketentuan.
+
+![TP14 Validasi Input](src/com/unpri/charactermanager/screenshots/tp14-validasi-input.png)
+
+#### 2. Validasi Duplikasi dan Level
+
+Screenshot ini memperlihatkan pemeriksaan terhadap nama karakter yang duplikat atau level karakter yang tidak sesuai dengan aturan.
+
+![TP14 Validasi Duplikat dan Level](src/com/unpri/charactermanager/screenshots/tp14-validasi-duplikat.png)
+
+#### 3. Hasil Penambahan Karakter
+
+Screenshot ini memperlihatkan aplikasi setelah berhasil menerima dan menambahkan data karakter yang valid.
+
+![TP14 Data Valid](src/com/unpri/charactermanager/screenshots/tp14-data-valid.png)
+
+### E. Kesimpulan
+
+Berdasarkan implementasi dan pengujian yang dilakukan, validasi input pada aplikasi Character Manager berhasil diterapkan. Sistem dapat menolak data yang tidak sesuai dengan ketentuan dan menerima data karakter yang valid. Dengan demikian, validasi membantu menjaga konsistensi data serta meningkatkan keandalan aplikasi.
