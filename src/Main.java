@@ -1,3 +1,4 @@
+
 import javax.swing.SwingUtilities;
 
 import com.unpri.charactermanager.model.Character;
@@ -9,7 +10,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        System.out.println("=== Character Manager TP12 ===");
+        System.out.println("=== Character Manager TP14 ===");
 
         CharacterManager manager = new CharacterManager();
 
@@ -21,7 +22,7 @@ public class Main {
                 + manager.getAverageLevel()
         );
 
-        // Membuat karakter
+        // Membuat karakter awal
         Character hero = new Character(
                 "Arjuna",
                 CharacterType.WARRIOR,
@@ -70,7 +71,7 @@ public class Main {
                 1
         );
 
-        // Menambahkan karakter
+        // Menambahkan karakter awal
         System.out.println("\n--- Add Character ---");
 
         System.out.println(
@@ -123,6 +124,24 @@ public class Main {
         System.out.println(
                 "Tambah Arjuna duplikat: "
                 + manager.addCharacter(duplicate)
+        );
+
+        // Menguji isNameTaken()
+        System.out.println("\n--- Name Taken Test ---");
+
+        System.out.println(
+                "Arjuna sudah digunakan: "
+                + manager.isNameTaken("Arjuna")
+        );
+
+        System.out.println(
+                "Budi sudah digunakan: "
+                + manager.isNameTaken("Budi")
+        );
+
+        System.out.println(
+                "Nama null sudah digunakan: "
+                + manager.isNameTaken(null)
         );
 
         // Menampilkan seluruh karakter
@@ -281,13 +300,9 @@ public class Main {
                 + manager.getTotalCharacters()
         );
 
-        /*
-         * Setelah Merlin dihapus, jumlah karakter menjadi 7.
-         * Selene ditambahkan agar GUI TP12 kembali memiliki
-         * minimal 8 karakter dengan variasi level dan role.
-         */
+        // Menambahkan kembali karakter untuk GUI
         System.out.println(
-                "\n--- Restore Characters for TP12 GUI ---"
+                "\n--- Restore Characters for TP14 GUI ---"
         );
 
         Character selene = new Character(
@@ -297,8 +312,35 @@ public class Main {
         );
 
         System.out.println(
-                "Tambah Selene untuk GUI: "
+                "Tambah Selene: "
                 + manager.addCharacter(selene)
+        );
+
+        // Dua karakter tambahan untuk TP14
+        System.out.println(
+                "\n--- Additional Characters for TP14 ---"
+        );
+
+        Character ragnar = new Character(
+                "Ragnar",
+                CharacterType.WARRIOR,
+                8
+        );
+
+        Character iris = new Character(
+                "Iris",
+                CharacterType.ARCHER,
+                9
+        );
+
+        System.out.println(
+                "Tambah Ragnar: "
+                + manager.addCharacter(ragnar)
+        );
+
+        System.out.println(
+                "Tambah Iris: "
+                + manager.addCharacter(iris)
         );
 
         System.out.println(
@@ -322,9 +364,7 @@ public class Main {
          */
         SwingUtilities.invokeLater(() -> {
 
-            MainWindow window = new MainWindow(
-                    manager.getAllCharacters()
-            );
+            MainWindow window = new MainWindow(manager);
 
             window.setVisible(true);
         });

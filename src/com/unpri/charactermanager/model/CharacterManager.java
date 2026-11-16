@@ -7,7 +7,6 @@ public class CharacterManager {
 
     private static final int MAX_CHARACTERS = 20;
 
-    // Menyimpan daftar karakter
     private ArrayList<Character> characters = new ArrayList<>();
 
     // Menambahkan karakter
@@ -17,31 +16,41 @@ public class CharacterManager {
             return false;
         }
 
+        String name = character.getName();
+
+        if (name == null || name.trim().isEmpty()) {
+            return false;
+        }
+
         // Memeriksa nama duplikat
-        if (findByName(character.getName()) != null) {
+        if (isNameTaken(name)) {
             return false;
         }
 
         // Memeriksa batas maksimal karakter
         if (characters.size() >= MAX_CHARACTERS) {
             throw new IllegalArgumentException(
-                "Jumlah karakter sudah mencapai batas maksimal 20."
+                    "Jumlah karakter sudah mencapai batas maksimal 20."
             );
         }
 
         characters.add(character);
+
         return true;
     }
 
     // Mencari karakter berdasarkan nama
     public Character findByName(String name) {
 
-        if (name == null) {
+        if (name == null || name.trim().isEmpty()) {
             return null;
         }
 
+        String cleanName = name.trim();
+
         for (Character character : characters) {
-            if (character.getName().equals(name)) {
+
+            if (character.getName().equalsIgnoreCase(cleanName)) {
                 return character;
             }
         }
@@ -49,8 +58,9 @@ public class CharacterManager {
         return null;
     }
 
-    // Memeriksa nama karakter
+    // Memeriksa apakah nama sudah digunakan
     public boolean isNameTaken(String name) {
+
         return findByName(name) != null;
     }
 
@@ -64,6 +74,7 @@ public class CharacterManager {
         }
 
         characters.remove(character);
+
         return true;
     }
 
@@ -93,7 +104,7 @@ public class CharacterManager {
         return (double) totalLevel / characters.size();
     }
 
-    // Mencari berdasarkan role
+    // Mencari karakter berdasarkan role
     public ArrayList<Character> findByType(CharacterType type) {
 
         ArrayList<Character> result = new ArrayList<>();
@@ -103,6 +114,7 @@ public class CharacterManager {
         }
 
         for (Character character : characters) {
+
             if (character.getType() == type) {
                 result.add(character);
             }
@@ -121,8 +133,10 @@ public class CharacterManager {
         Character strongest = characters.get(0);
 
         for (Character character : characters) {
+
             if (character.getAttackPower()
                     > strongest.getAttackPower()) {
+
                 strongest = character;
             }
         }

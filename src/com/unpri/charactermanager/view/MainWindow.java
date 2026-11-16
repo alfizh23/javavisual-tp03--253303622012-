@@ -1,10 +1,10 @@
+
 package com.unpri.charactermanager.view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.Cursor;
-import java.util.ArrayList;
+import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -16,22 +16,30 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
 import com.unpri.charactermanager.model.Character;
+import com.unpri.charactermanager.model.CharacterManager;
 import com.unpri.charactermanager.model.CharacterType;
 
 public class MainWindow extends JFrame {
 
+    private CharacterManager manager;
+
     private JPanel mainPanel;
-    private ArrayList<Character> characterList;
+    private JPanel cardsPanel;
 
-    public MainWindow(ArrayList<Character> characterList) {
-        super("Character Manager v0.5");
+    private JLabel totalLabel;
+    private JLabel averageLabel;
+    private JLabel highestLabel;
 
-        this.characterList = characterList;
+    public MainWindow(CharacterManager manager) {
+
+        super("Character Manager v0.6");
+
+        this.manager = manager;
 
         initComponents();
 
         pack();
-        setMinimumSize(new Dimension(650, 400));
+        setMinimumSize(new Dimension(750, 550));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
     }
@@ -39,18 +47,42 @@ public class MainWindow extends JFrame {
     private void initComponents() {
 
         mainPanel = new JPanel(new BorderLayout(12, 12));
+
         mainPanel.setBackground(AppTheme.BG_MAIN);
+
         mainPanel.setBorder(
-                BorderFactory.createEmptyBorder(16, 16, 16, 16)
+                BorderFactory.createEmptyBorder(
+                        16, 16, 16, 16
+                )
         );
 
-        // NORTH: Header dan panel statistik
-        mainPanel.add(
+        // NORTH: Header, statistik, dan form
+        JPanel topPanel = new JPanel(new BorderLayout(0, 12));
+
+        topPanel.setBackground(AppTheme.BG_MAIN);
+
+        topPanel.add(
                 createHeaderPanel(),
                 BorderLayout.NORTH
         );
 
-        // CENTER: Daftar karakter dalam JScrollPane
+        CharacterFormPanel formPanel =
+                new CharacterFormPanel(
+                        manager,
+                        this::refreshList
+                );
+
+        topPanel.add(
+                formPanel,
+                BorderLayout.CENTER
+        );
+
+        mainPanel.add(
+                topPanel,
+                BorderLayout.NORTH
+        );
+
+        // CENTER: Daftar karakter
         mainPanel.add(
                 createCharacterScrollPane(),
                 BorderLayout.CENTER
@@ -69,8 +101,12 @@ public class MainWindow extends JFrame {
         );
 
         add(mainPanel);
+
+        // Menampilkan data awal
+        refreshList();
     }
 
+    // Membuat header dan statistik
     private JPanel createHeaderPanel() {
 
         JPanel headerPanel = new JPanel(
@@ -92,37 +128,21 @@ public class MainWindow extends JFrame {
                 BorderLayout.NORTH
         );
 
-        // Panel tambahan: GridLayout 2 x 2
         JPanel statsPanel = new JPanel(
-                new GridLayout(2, 2, 8, 6)
+                new GridLayout(1, 3, 8, 6)
         );
 
         statsPanel.setBackground(AppTheme.BG_MAIN);
 
-        statsPanel.add(
-                createStatLabel(
-                        "Total: " + characterList.size()
-                )
-        );
+        totalLabel = createStatLabel("Total: 0");
 
-        statsPanel.add(
-                createStatLabel(
-                        "Avg Lv: "
-                        + String.format("%.1f", getAverageLevel())
-                )
-        );
+        averageLabel = createStatLabel("Average Level: 0");
 
-        statsPanel.add(
-                createStatLabel(
-                        "Highest Lv: " + getHighestLevel()
-                )
-        );
+        highestLabel = createStatLabel("Highest Level: 0");
 
-        statsPanel.add(
-                createStatLabel(
-                        "Roles: " + CharacterType.values().length
-                )
-        );
+        statsPanel.add(totalLabel);
+        statsPanel.add(averageLabel);
+        statsPanel.add(highestLabel);
 
         headerPanel.add(
                 statsPanel,
@@ -132,6 +152,7 @@ public class MainWindow extends JFrame {
         return headerPanel;
     }
 
+    // Membuat label statistik
     private JLabel createStatLabel(String text) {
 
         JLabel label = new JLabel(
@@ -151,26 +172,15 @@ public class MainWindow extends JFrame {
         return label;
     }
 
+    // Membuat area scroll daftar karakter
     private JScrollPane createCharacterScrollPane() {
 
-        // Panel untuk kartu karakter
-        JPanel cardsPanel = new JPanel(
+        cardsPanel = new JPanel(
                 new GridLayout(0, 1, 0, 8)
         );
 
         cardsPanel.setBackground(AppTheme.BG_MAIN);
 
-        for (Character character : characterList) {
-            cardsPanel.add(
-                    createCharacterLabel(character)
-            );
-        }
-
-        /*
-         * Panel pembungkus.
-         * Grid kartu ditempatkan di NORTH agar kartu
-         * tetap berkumpul di bagian atas area scroll.
-         */
         JPanel wrapperPanel = new JPanel(
                 new BorderLayout()
         );
@@ -197,6 +207,39 @@ public class MainWindow extends JFrame {
         return scroll;
     }
 
+    // Memperbarui daftar karakter dan statistik
+    public void refreshList() {
+
+        cardsPanel.removeAll();
+
+        // Mengambil data terbaru dari Manager
+        for (Character character : manager.getAllCharacters()) {
+
+            cardsPanel.add(
+                    createCharacterLabel(character)
+            );
+        }
+
+        // Memperbarui statistik
+        totalLabel.setText(
+                "Total: " + manager.getTotalCharacters()
+        );
+
+        averageLabel.setText(
+                "Average Level: "
+                + String.format("%.1f", manager.getAverageLevel())
+        );
+
+        highestLabel.setText(
+                "Highest Level: " + getHighestLevel()
+        );
+
+        // Memperbarui tampilan Swing
+        cardsPanel.revalidate();
+        cardsPanel.repaint();
+    }
+
+    // Membuat kartu karakter
     private JLabel createCharacterLabel(Character c) {
 
         String info =
@@ -234,6 +277,7 @@ public class MainWindow extends JFrame {
         return label;
     }
 
+    // Membuat legenda role
     private JPanel createLegendPanel() {
 
         JPanel legendPanel = new JPanel();
@@ -245,9 +289,7 @@ public class MainWindow extends JFrame {
                 )
         );
 
-        legendPanel.setBackground(
-                AppTheme.BG_MAIN
-        );
+        legendPanel.setBackground(AppTheme.BG_MAIN);
 
         legendPanel.setBorder(
                 BorderFactory.createEmptyBorder(
@@ -266,16 +308,13 @@ public class MainWindow extends JFrame {
                 Box.createVerticalStrut(12)
         );
 
-        // Legend dibuat dari enum Model
         for (CharacterType type : CharacterType.values()) {
 
             JLabel roleLabel = new JLabel(
                     type.toString()
             );
 
-            roleLabel.setFont(
-                    AppTheme.FONT_BODY
-            );
+            roleLabel.setFont(AppTheme.FONT_BODY);
 
             roleLabel.setForeground(
                     AppTheme.colorFor(type)
@@ -299,15 +338,14 @@ public class MainWindow extends JFrame {
         return legendPanel;
     }
 
+    // Membuat status bar
     private JPanel createStatusBar() {
 
         JPanel statusBar = new JPanel(
                 new BorderLayout()
         );
 
-        statusBar.setBackground(
-                AppTheme.BG_MAIN
-        );
+        statusBar.setBackground(AppTheme.BG_MAIN);
 
         statusBar.setBorder(
                 BorderFactory.createEmptyBorder(
@@ -319,25 +357,13 @@ public class MainWindow extends JFrame {
                 "Character Manager"
         );
 
-        statusText.setFont(
-                AppTheme.FONT_BODY
-        );
+        statusText.setFont(AppTheme.FONT_BODY);
+        statusText.setForeground(AppTheme.TEXT_MAIN);
 
-        statusText.setForeground(
-                AppTheme.TEXT_MAIN
-        );
+        JLabel versionText = new JLabel("v0.6");
 
-        JLabel versionText = new JLabel(
-                "v0.5"
-        );
-
-        versionText.setFont(
-                AppTheme.FONT_MONO
-        );
-
-        versionText.setForeground(
-                AppTheme.TEXT_MAIN
-        );
+        versionText.setFont(AppTheme.FONT_MONO);
+        versionText.setForeground(AppTheme.TEXT_MAIN);
 
         statusBar.add(
                 statusText,
@@ -352,26 +378,12 @@ public class MainWindow extends JFrame {
         return statusBar;
     }
 
-    private double getAverageLevel() {
-
-        if (characterList.isEmpty()) {
-            return 0;
-        }
-
-        int total = 0;
-
-        for (Character character : characterList) {
-            total += character.getLevel();
-        }
-
-        return (double) total / characterList.size();
-    }
-
+    // Mencari level tertinggi
     private int getHighestLevel() {
 
         int highest = 0;
 
-        for (Character character : characterList) {
+        for (Character character : manager.getAllCharacters()) {
 
             if (character.getLevel() > highest) {
                 highest = character.getLevel();

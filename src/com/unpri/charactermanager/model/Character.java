@@ -16,6 +16,7 @@ public class Character {
     private int mana;
 
     public Character(String name, CharacterType type, int level) {
+
         validateCharacter(name, type, level);
 
         this.name = name.trim();
@@ -33,6 +34,12 @@ public class Character {
 
         validateCharacter(name, type, level);
 
+        if (hitPoints < 0 || attackPower < 0) {
+            throw new IllegalArgumentException(
+                    "HP dan Attack Power tidak boleh negatif."
+            );
+        }
+
         this.id = id;
         this.name = name.trim();
         this.type = type;
@@ -44,6 +51,7 @@ public class Character {
         totalCharacterCreated++;
     }
 
+    // Validasi utama karakter
     private static void validateCharacter(
             String name, CharacterType type, int level) {
 
@@ -53,9 +61,17 @@ public class Character {
             );
         }
 
-        if (name.trim().length() > 20) {
+        String cleanName = name.trim();
+
+        if (cleanName.length() > 20) {
             throw new IllegalArgumentException(
                     "Nama karakter maksimal 20 karakter."
+            );
+        }
+
+        if (!cleanName.matches("[\\p{L}]+(?: [\\p{L}]+)*")) {
+            throw new IllegalArgumentException(
+                    "Nama hanya boleh berisi huruf dan satu spasi antar kata."
             );
         }
 
@@ -123,6 +139,7 @@ public class Character {
     }
 
     public void setLevel(int level) {
+
         validateCharacter(this.name, this.type, level);
 
         this.level = level;
@@ -131,6 +148,7 @@ public class Character {
     }
 
     public void setMana(int mana) {
+
         if (mana < 0) {
             throw new IllegalArgumentException(
                     "Mana tidak boleh negatif."
@@ -146,6 +164,7 @@ public class Character {
 
     @Override
     public boolean equals(Object obj) {
+
         if (this == obj) {
             return true;
         }
@@ -155,16 +174,21 @@ public class Character {
         }
 
         Character other = (Character) obj;
-        return Objects.equals(this.name, other.name);
+
+        return Objects.equals(
+                this.name.toLowerCase(),
+                other.name.toLowerCase()
+        );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return Objects.hash(name.toLowerCase());
     }
 
     @Override
     public String toString() {
+
         return "Character{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
